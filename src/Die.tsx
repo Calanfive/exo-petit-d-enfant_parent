@@ -1,22 +1,23 @@
-import { useState, useCallback } from "react"
+import { useCallback, useState } from "react";
 
-const nombreAleatoire = Math.floor(Math.random() * 6) + 1;
-console.log(nombreAleatoire);
-
-const Die = () => {
-    const [value, setValue] = useState(nombreAleatoire);
+    const Die = (props: { onRoll: (newVal: number) => void}) => {
+        const [value, setValue] = useState(Math.floor(Math.random() * 6) + 1);
 
 
-    const handleClick = useCallback(
-        () => { setValue(Math.floor(Math.random() * 6) + 1) },
-        []
-    )
-    
-    return (
-        <div className="roll" onClick={handleClick}>
-            {value}
-        </div>
-    );
-};
+        const handleClick = useCallback(
+            () => { 
+                const randomNumber = (Math.floor(Math.random() * 6) + 1)
+                props.onRoll(randomNumber)
+                setValue(randomNumber) 
+            },
+            []
+        )
+
+        return (
+            <div className="onRoll" onClick={handleClick }>
+                {value}
+            </div>
+        );
+    };
 
 export default Die;

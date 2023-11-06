@@ -1,18 +1,32 @@
-
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Die from './Die';
 
 function App() {
-  const [value, setValue] = useState(Math.floor(Math.random() * 6) + 1);
+  const [diceValues, setValues] = useState([1, 5, 4]);
 
-  const handlerNumberChange = (newValue: number) => {
-    setValue(newValue);
-};
+    const sum = useMemo(
+      () => {
+          return diceValues[0] + diceValues[1] + diceValues[2]
+      },
+      [diceValues]
+    )
+
+    const handlerNumberChange = (pos: number, newValue1: number) => {
+        setValues( prev => {
+          let newValues = [...prev]
+          newValues[pos] = newValue1
+          return newValues
+        })
+    };
 
   return (
     <div>
-      <Die onRoll={handlerNumberChange} />
-      <p>{value}</p>
+      <p>{sum}</p>
+      <p>values: [ {diceValues.join(', ')} ]</p>
+      {diceValues.map((_, i) => (
+        <Die key={i} onRoll={(newVal) => handlerNumberChange(i, newVal)} />
+      ))}
+      
     </div>
   )
 }
